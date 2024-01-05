@@ -32,9 +32,9 @@ public class VendasApplication {
 
             clientes.buscarPorNome("dmi").forEach(System.out::println);
 
-//            clientes.obterTodos().forEach(c -> {
-//                clientes.deletar(c);
-//            });
+            clientes.obterTodos().forEach(c -> {
+                clientes.deletarPorNome(c);
+            });
 
             todosClientes = clientes.obterTodos();
             if(todosClientes.isEmpty()) {
