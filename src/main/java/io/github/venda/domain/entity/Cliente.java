@@ -5,6 +5,17 @@ public class Cliente {
     private Integer id;
     private String nome;
 
+    public Cliente(String nome) {
+        this.nome = nome;
+    }
+
+    public Cliente(Integer id, String nome) {
+        this.nome = nome;
+        this.id = id;
+    }
+
+    public Cliente() {}
+
     public Integer getId() {
         return id;
     }
@@ -21,4 +32,11 @@ public class Cliente {
         this.nome = nome;
     }
 
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                '}';
+    }
 }
