@@ -2,6 +2,8 @@ package io.github.venda.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "cliente")
 public class Cliente {
@@ -10,8 +12,12 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "nome", length = 100)
     private String nome;
+
+    @OneToMany(mappedBy = "cliente")
+    private Set<Pedido> pedido;
 
     public Cliente(String nome) {
         this.nome = nome;
@@ -23,6 +29,14 @@ public class Cliente {
     }
 
     public Cliente() {}
+
+    public Set<Pedido> getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Set<Pedido> pedido) {
+        this.pedido = pedido;
+    }
 
     public Integer getId() {
         return id;
