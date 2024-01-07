@@ -22,5 +22,9 @@ public interface Clientes extends JpaRepository<Cliente, Integer> {
     @Modifying
     void deleteById(Integer id);
 
+    @Query("SELECT c FROM Cliente c LEFT JOIN FETCH c.pedidos WHERE c.id = :id")
+    Cliente findClienteFetchPedidos(@Param("id") Integer id);
+
+
 
 }
