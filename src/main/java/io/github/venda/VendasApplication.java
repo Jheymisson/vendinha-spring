@@ -21,33 +21,10 @@ import java.util.List;
 public class VendasApplication {
 
     @Bean
-    public CommandLineRunner init(
-            @Autowired Clientes clientes,
-            @Autowired Pedidos pedidos
-    ){
+    public CommandLineRunner commandLineRunner(@Autowired Clientes clientes){
         return args -> {
-            clientes.save(new Cliente("Jheymisson"));
-            clientes.save(new Cliente("Julia"));
-            Cliente usuario3 = new Cliente("Ludmilo");
-            clientes.save(usuario3);
-
-            Pedido p = new Pedido();
-            p.setCliente(usuario3);
-            p.setDataPedido( LocalDate.now() );
-            p.setTotal(BigDecimal.valueOf(100));
-
-            pedidos.save(p);
-
-            List<Cliente> todosClientes = clientes.findAll();
-            todosClientes.forEach(System.out::println);
-
-            List<Cliente> buscaPorNome1 = clientes.encontrarPorNome1("miss");
-            buscaPorNome1.forEach(System.out::println);
-
-            List<Cliente> buscaPorNome2 = clientes.encontrarPorNome2("dmi");
-            buscaPorNome2.forEach(System.out::println);
-
-            pedidos.findByCliente(usuario3).forEach(System.out::println);
+            Cliente c = new Cliente(null, "Jheymisson");
+            clientes.save(c);
         };
     }
 
