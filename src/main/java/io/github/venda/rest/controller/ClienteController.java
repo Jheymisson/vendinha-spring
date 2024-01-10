@@ -20,7 +20,7 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity getClienteById( @PathVariable Integer id ){
+    public ResponseEntity buscarClienteById( @PathVariable Integer id ){
        Optional<Cliente> cliente = clientes.findById(id);
        if(cliente.isPresent()){
            return ResponseEntity.ok(cliente.get());
@@ -28,5 +28,22 @@ public class ClienteController {
        return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/")
+    @ResponseBody
+    public ResponseEntity salvarCliente( @RequestBody Cliente cliente){
+        Cliente clienteSalvo = clientes.save(cliente);
+        return ResponseEntity.ok(clienteSalvo);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity deletarCliente( @PathVariable Integer id ){
+        Optional<Cliente> cliente = clientes.findById(id);
+        if(cliente.isPresent()){
+            clientes.delete( cliente.get() );
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 }
