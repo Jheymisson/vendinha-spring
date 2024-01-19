@@ -13,6 +13,7 @@ import io.github.venda.rest.dto.ItensPedidoDTO;
 import io.github.venda.rest.dto.PedidoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +28,7 @@ public class PedidoServiceImpl implements PedidoService {
     private final ProdutosRepository produtosRepository;
 
     @Override
+    @Transactional
     public PedidoEntity salvar(PedidoDTO pedidoDTO) {
         Integer idCliente = pedidoDTO.getCliente();
         ClienteEntity clienteEntity = clientesRepository.findById(idCliente)
