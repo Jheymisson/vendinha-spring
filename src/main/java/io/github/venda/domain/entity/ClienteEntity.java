@@ -27,8 +27,8 @@ public class ClienteEntity {
     private String nome;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    private Set<PedidoEntity> pedidoEntities;
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
+    private Set<PedidoEntity> pedidoEntity;
 
     public ClienteEntity(String nome) {
         this.nome = nome;

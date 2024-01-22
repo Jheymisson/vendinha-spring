@@ -1,5 +1,6 @@
 package io.github.venda.domain.entity;
 
+import io.github.venda.domain.enums.StatusPedido;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "pedido")
 public class PedidoEntity {
 
     @Id
@@ -28,8 +30,21 @@ public class PedidoEntity {
     @Column(name = "total", precision = 7, scale = 2)
     private BigDecimal total;
 
-    @OneToMany(mappedBy = "pedido")
-    private List<ItemPedidoEntity> itemPedidoEntityList;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusPedido statusPedido;
 
+    @OneToMany(mappedBy = "pedidoEntity", cascade = CascadeType.ALL)
+    private List<ItemPedidoEntity> itens;
 
+    @Override
+    public String toString() {
+        return "PedidoEntity{" +
+                "id=" + id +
+                ", clienteEntity=" + (clienteEntity != null ? clienteEntity.getId() : null) +
+                ", dataPedido=" + dataPedido +
+                ", statusPedido=" + statusPedido +
+                ", total=" + total +
+                '}';
+    }
 }

@@ -4,6 +4,7 @@ import io.github.venda.domain.entity.ClienteEntity;
 import io.github.venda.domain.entity.ItemPedidoEntity;
 import io.github.venda.domain.entity.PedidoEntity;
 import io.github.venda.domain.entity.ProdutoEntity;
+import io.github.venda.domain.enums.StatusPedido;
 import io.github.venda.domain.repository.ClientesRepository;
 import io.github.venda.domain.repository.PedidosRepository;
 import io.github.venda.domain.repository.ProdutosRepository;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,12 +40,27 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoEntity.setTotal(pedidoDTO.getTotal());
         pedidoEntity.setDataPedido(LocalDate.now());
         pedidoEntity.setClienteEntity(clienteEntity);
+        pedidoEntity.setStatusPedido(StatusPedido.REALIZADO);
 
         List<ItemPedidoEntity> itensPedido = converterItems(pedidoEntity, pedidoDTO.getItems());
-        pedidoEntity.setItemPedidoEntityList(itensPedido);
 
-        return pedidosRepository.save(pedidoEntity);
+        System.out.println("Itens do Pedido:");
+        itensPedido.forEach(item -> System.out.println("ProdutoId: " + item.getProdutoEntity().getId() + ", Quantidade: " + item.getQuantidade()));
+
+        pedidoEntity.setItens(itensPedido);
+        PedidoEntity pedidoSalvo = pedidosRepository.save(pedidoEntity);
+
+        System.out.println("Pedido salvo com sucesso: PedidoId=" + pedidoSalvo.getId());
+        return pedidoSalvo;
     }
+
+    @Override
+    public Optional<PedidoEntity> obterPedidoCompleto(Integer id) {
+        Optional<PedidoEntity> pedido = pedidosRepository.findByIdFetchItens(id);
+        pedido.ifPresent(p -> System.out.println("Itens do pedido: " + p.getItens()));
+        return pedido;
+    }
+
 
     private List<ItemPedidoEntity> converterItems(PedidoEntity pedidoEntity, List<ItensPedidoDTO> itensPedidoDTOs) {
         if (itensPedidoDTOs.isEmpty()) {
