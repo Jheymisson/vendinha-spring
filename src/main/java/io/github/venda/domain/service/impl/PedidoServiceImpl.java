@@ -9,6 +9,7 @@ import io.github.venda.domain.repository.ClientesRepository;
 import io.github.venda.domain.repository.PedidosRepository;
 import io.github.venda.domain.repository.ProdutosRepository;
 import io.github.venda.domain.service.PedidoService;
+import io.github.venda.exception.PedidoNaoEncontradoException;
 import io.github.venda.exception.RegrasNegocioException;
 import io.github.venda.rest.dto.ItensPedidoDTO;
 import io.github.venda.rest.dto.PedidoDTO;
@@ -44,13 +45,11 @@ public class PedidoServiceImpl implements PedidoService {
 
         List<ItemPedidoEntity> itensPedido = converterItems(pedidoEntity, pedidoDTO.getItems());
 
-        System.out.println("Itens do Pedido:");
         itensPedido.forEach(item -> System.out.println("ProdutoId: " + item.getProdutoEntity().getId() + ", Quantidade: " + item.getQuantidade()));
 
         pedidoEntity.setItens(itensPedido);
         PedidoEntity pedidoSalvo = pedidosRepository.save(pedidoEntity);
 
-        System.out.println("Pedido salvo com sucesso: PedidoId=" + pedidoSalvo.getId());
         return pedidoSalvo;
     }
 
@@ -59,6 +58,15 @@ public class PedidoServiceImpl implements PedidoService {
         Optional<PedidoEntity> pedido = pedidosRepository.findByIdFetchItens(id);
         pedido.ifPresent(p -> System.out.println("Itens do pedido: " + p.getItens()));
         return pedido;
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        pedidosRepository.findById(id).map(pedidoEntity -> {
+            pedidoEntity.setStatusPedido(statusPedido);
+            return pedidosRepository.save(pedidoEntity);
+        }).orElseThrow( () -> new PedidoNaoEncontradoException() );
     }
 
 
