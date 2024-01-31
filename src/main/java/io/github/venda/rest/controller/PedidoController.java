@@ -8,6 +8,7 @@ import io.github.venda.rest.dto.AtualizacaoStatusPedidoDTO;
 import io.github.venda.rest.dto.InformacoesItemPedidoDTO;
 import io.github.venda.rest.dto.InformacoesPedidoDTO;
 import io.github.venda.rest.dto.PedidoDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class PedidoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer salvarPedido(@RequestBody PedidoDTO pedidoDTO){
+    public Integer salvarPedido(@RequestBody @Valid PedidoDTO pedidoDTO){
         PedidoEntity pedidoEntity = pedidoService.salvar(pedidoDTO);
         return pedidoEntity.getId();
     }

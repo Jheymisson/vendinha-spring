@@ -38,7 +38,7 @@ public class ProdutoController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProdutoEntity salvarProduto(@RequestBody ProdutoEntity produtoEntity){
+    public ProdutoEntity salvarProduto(@RequestBody @Valid ProdutoEntity produtoEntity){
         return produtosRepository.save(produtoEntity);
     }
 

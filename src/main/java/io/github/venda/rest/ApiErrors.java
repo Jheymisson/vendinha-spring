@@ -4,16 +4,26 @@ import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Map;
 
 public class ApiErrors {
 
     @Getter
-    private List<String> errors;
+    private List<String> errorMessages;
 
-    public ApiErrors (String mensagemErro) {
-        this.errors = Arrays.asList(mensagemErro);
+    @Getter
+    private Map<String, String> fieldErrors;
+
+    public ApiErrors(String errorMessage) {
+        this.errorMessages = Arrays.asList(errorMessage);
     }
 
+    public ApiErrors(List<String> errorMessages) {
+        this.errorMessages = errorMessages;
+    }
+
+    public ApiErrors(Map<String, String> fieldErrors) {
+        this.fieldErrors = fieldErrors;
+    }
 
 }

@@ -2,6 +2,7 @@ package io.github.venda.rest.controller;
 
 import io.github.venda.domain.entity.ClienteEntity;
 import io.github.venda.domain.repository.ClientesRepository;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ClienteController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public ClienteEntity salvarCliente(@RequestBody ClienteEntity clienteEntity){
+    public ClienteEntity salvarCliente(@RequestBody @Valid ClienteEntity clienteEntity){
         return clientesRepository.save(clienteEntity);
     }
 
@@ -46,7 +47,7 @@ public class ClienteController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity atualizarCliente(@PathVariable Integer id,
-                                           @RequestBody ClienteEntity clienteEntity){
+                                           @RequestBody @Valid ClienteEntity clienteEntity){
         return clientesRepository.findById(id).map(clienteEntityExistente -> {
             clienteEntity.setId(clienteEntityExistente.getId());
             clientesRepository.save(clienteEntity);
